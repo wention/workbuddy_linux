@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "baseline": true,
-  "updated_at": "2026-11-11T13:28:03Z",
+  "baseline": false,
+  "updated_at": "2026-11-11T13:44:40Z",
   "latest_version": "5.6.2.40046327",
   "latest_tag": "v5.6.2.40046327",
   "channels": {
@@ -23,11 +23,11 @@
       "etag": "\"5e95cb57e449d7e9c4d60f88ed96ba1e-410\"",
       "last_modified": "Wed, 30 Sep 2026 04:48:28 GMT",
       "probe_ok": true,
-      "verified_sha256": null,
-      "verified_at": null,
-      "verified_size_bytes": null,
+      "verified_sha256": "12149ad8c0cd748fd5062d8f62c7827d688d8095427ada99b1ae9e7019897523",
+      "verified_at": "2026-11-11T13:44:40Z",
+      "verified_size_bytes": 429829872,
       "first_seen_at": "2026-11-11T13:28:03Z",
-      "last_checked_at": "2026-11-11T13:28:03Z"
+      "last_checked_at": "2026-11-11T13:44:40Z"
     },
     "workbuddy-linux-x64-rpm": {
       "platform": "workbuddy-linux-x64-rpm",
@@ -47,11 +47,11 @@
       "etag": "\"d7d23cd0606c208968da25b7b783ff73-361\"",
       "last_modified": "Wed, 30 Sep 2026 04:48:38 GMT",
       "probe_ok": true,
-      "verified_sha256": null,
-      "verified_at": null,
-      "verified_size_bytes": null,
+      "verified_sha256": "2e49fac166708e9716ab36dc3a7ffcf0fcea4a94591419b3654c59b67f4d392d",
+      "verified_at": "2026-11-11T13:44:40Z",
+      "verified_size_bytes": 378230056,
       "first_seen_at": "2026-11-11T13:28:03Z",
-      "last_checked_at": "2026-11-11T13:28:03Z"
+      "last_checked_at": "2026-11-11T13:44:40Z"
     },
     "workbuddy-linux-arm64-deb": {
       "platform": "workbuddy-linux-arm64-deb",
@@ -71,11 +71,11 @@
       "etag": "\"965b97a531be8aa244a4fd02a9dff2ec-382\"",
       "last_modified": "Wed, 30 Sep 2026 05:07:41 GMT",
       "probe_ok": true,
-      "verified_sha256": null,
-      "verified_at": null,
-      "verified_size_bytes": null,
+      "verified_sha256": "561822578435d382a06d0a0b079a4b157f68b588c9fe72d589e2a88b2fd155fa",
+      "verified_at": "2026-11-11T13:44:40Z",
+      "verified_size_bytes": 400068468,
       "first_seen_at": "2026-11-11T13:28:03Z",
-      "last_checked_at": "2026-11-11T13:28:03Z"
+      "last_checked_at": "2026-11-11T13:44:40Z"
     },
     "workbuddy-linux-arm64-rpm": {
       "platform": "workbuddy-linux-arm64-rpm",
@@ -95,11 +95,11 @@
       "etag": "\"ac401683df422f0c1971ea4bdb575866-340\"",
       "last_modified": "Wed, 30 Sep 2026 05:07:51 GMT",
       "probe_ok": true,
-      "verified_sha256": null,
-      "verified_at": null,
-      "verified_size_bytes": null,
+      "verified_sha256": "26df914b76abfb9167718bbbbe292e0676ec6eff5e12da7e01c3a049daaae695",
+      "verified_at": "2026-11-11T13:44:40Z",
+      "verified_size_bytes": 355596876,
       "first_seen_at": "2026-11-11T13:28:03Z",
-      "last_checked_at": "2026-11-11T13:28:03Z"
+      "last_checked_at": "2026-11-11T13:44:40Z"
     }
   }
 }
