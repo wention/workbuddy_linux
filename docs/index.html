@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorkBuddy Linux 下载 · 官方 deb / rpm 直链</title>
+<meta name="description" content="自动追踪腾讯官方更新接口，提供 WorkBuddy Linux x64 / ARM64 的 deb 与 rpm 官方直链、版本与校验和。">
+<style>
+  :root {
+    color-scheme: dark light;
+    --bg: #0d1117; --panel: #161b22; --panel-2: #1c222b; --line: #2a313c;
+    --text: #e6edf3; --muted: #9aa7b4; --accent: #4c9aff; --accent-2: #63d5b4;
+    --code: #0b1017; --warn: #e3b341;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f8fa; --panel: #ffffff; --panel-2: #f0f3f7; --line: #d8dee6;
+      --text: #1f2328; --muted: #59636e; --accent: #0969da; --accent-2: #1a7f5a;
+      --code: #f0f3f7; --warn: #9a6700;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 20px 72px; }
+  header { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; justify-content: space-between; }
+  h1 { font-size: 30px; line-height: 1.3; margin: 0 0 8px; letter-spacing: -.4px; }
+  .sub { color: var(--muted); margin: 0; max-width: 680px; }
+  .meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 18px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--panel);
+    font-size: 13px; font-variant-numeric: tabular-nums;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); }
+  .version { font-weight: 600; color: var(--accent); }
+  button {
+    font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--panel); color: var(--text); padding: 7px 14px; transition: .15s;
+  }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  a.btn {
+    display: inline-block; text-align: center; text-decoration: none; font-weight: 600;
+    padding: 9px 16px; border-radius: 8px; background: var(--accent); color: #fff;
+    border: 1px solid var(--accent); transition: .15s;
+  }
+  a.btn:hover { filter: brightness(1.12); }
+  a.btn.disabled { opacity: .45; pointer-events: none; }
+  h2 { font-size: 19px; margin: 44px 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 20px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .card .top { display: flex; justify-content: space-between; align-items: center; }
+  .tag { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .arch { font-size: 17px; font-weight: 650; }
+  .fmt { font-size: 12px; padding: 2px 9px; border: 1px solid var(--line); border-radius: 6px; color: var(--accent); }
+  .row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); }
+  .row b { color: var(--text); font-weight: 550; font-variant-numeric: tabular-nums; }
+  .distro { font-size: 13px; color: var(--muted); min-height: 38px; }
+  .sha { font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-all; color: var(--muted); }
+  .sha.ok { color: var(--accent-2); }
+  .sha em { font-style: normal; color: var(--warn); }
+  pre {
+    background: var(--code); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; overflow-x: auto; font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    margin: 0 0 12px;
+  }
+  .code-head { display: flex; justify-content: space-between; align-items: center; margin: 0 0 8px; }
+  .code-head span { color: var(--muted); font-size: 13px; }
+  .note { background: var(--panel-2); border-left: 3px solid var(--warn); border-radius: 0 10px 10px 0; padding: 12px 16px; color: var(--muted); font-size: 13px; }
+  ul.notes { color: var(--muted); font-size: 13px; padding-left: 20px; }
+  ul.notes li { margin: 5px 0; }
+  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 18px; color: var(--muted); font-size: 13px; }
+  a { color: var(--accent); }
+  #status { color: var(--warn); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>WorkBuddy Linux 官方安装包</h1>
+      <p class="sub">官网下载页没有 Linux 入口，但官方更新接口提供了 deb / rpm 直链。本页由 GitHub Actions 每天自动检查四个通道并更新。</p>
+      <div class="meta">
+        <span class="pill"><span class="dot"></span> 当前版本 <span class="version" id="version">读取中…</span></span>
+        <span class="pill" id="updated">—</span>
+        <button id="refresh" type="button">刷新</button>
+      </div>
+    </div>
+  </header>
+
+  <p id="status" role="status"></p>
+
+  <h2>选择你的架构与发行版</h2>
+  <div class="grid" id="cards"></div>
+
+  <h2>命令行安装（始终获取最新版）</h2>
+  <div class="code-head"><span>Ubuntu / Debian / UOS / deepin / openKylin · x86_64</span><button type="button" data-copy="deb-code">复制</button></div>
+  <pre id="deb-code">url=$(curl -fsSL "https://copilot.tencent.com/v2/update?platform=workbuddy-linux-x64-deb" | jq -r '.url')
+curl -fL -O "$url"
+sha256sum WorkBuddy-linux-x64-deb-*.deb
+sudo apt install ./WorkBuddy-linux-x64-deb-*.deb</pre>
+
+  <div class="code-head"><span>Fedora / RHEL / openSUSE · x86_64</span><button type="button" data-copy="rpm-code">复制</button></div>
+  <pre id="rpm-code">url=$(curl -fsSL "https://copilot.tencent.com/v2/update?platform=workbuddy-linux-x64-rpm" | jq -r '.url')
+curl -fL -O "$url"
+sha256sum WorkBuddy-linux-x64-rpm-*.rpm
+sudo dnf install ./WorkBuddy-linux-x64-rpm-*.rpm</pre>
+
+  <p class="note">ARM64 机器把命令中的 <code>x64</code> 换成 <code>arm64</code>。不确定架构时运行 <code>uname -m</code>：输出 <code>x86_64</code> 选 x64，<code>aarch64</code> 选 ARM64。<strong>不要硬编码下载链接</strong>，构建号每次发版都会变。</p>
+
+  <h2>说明</h2>
+  <ul class="notes">
+    <li>上游 JSON 的 <code>sha256hash</code> 字段与文件实测值可能不一致，本页优先展示 Actions 实际下载计算出的 SHA256；安装前请自行 <code>sha256sum</code> 校验。</li>
+    <li>更新接口是未公开接口，随时可能变动；本页只是官方直链的追踪器，不托管、不修改安装包。</li>
+    <li><code>supportsFastUpdate: false</code>，应用内更新在 Linux 上会指向官网，升级请重新下载安装包。</li>
+    <li>龙芯（LoongArch）没有官方包；deepin 商店的版本是社区移植，不在追踪范围内。</li>
+    <li>包版权归腾讯所有。本页数据来源与排查过程见<a href="https://xingwangzhe.fun/posts/workbuddy-linux-deb-rpm/" target="_blank" rel="noopener">原文</a>（CC BY-NC-SA 4.0）。</li>
+  </ul>
+
+  <footer>
+    数据文件：<a href="versions.json">versions.json</a> · <a href="latest.json">latest.json</a> ·
+    更新时间由 GitHub Actions 自动写入，手动刷新只重新读取数据文件。
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var LABELS = {
+    'workbuddy-linux-x64-deb': 'x64 / amd64 · deb',
+    'workbuddy-linux-x64-rpm': 'x64 / amd64 · rpm',
+    'workbuddy-linux-arm64-deb': 'ARM64 / aarch64 · deb',
+    'workbuddy-linux-arm64-rpm': 'ARM64 / aarch64 · rpm'
+  };
+  var ORDER = Object.keys(LABELS);
+  // Actions rewrites this inline snapshot on every release so the page also
+  // works when opened from disk (no fetch / CORS restrictions).
+  var FALLBACK = /* AUTOGEN:DATA:START */ {"schema":1,"baseline":true,"updated_at":"2026-11-11T13:28:03Z","latest_version":"5.6.2.40046327","latest_tag":"v5.6.2.40046327","channels":{"workbuddy-linux-x64-deb":{"platform":"workbuddy-linux-x64-deb","version":"5.6.2.40046327","product_version":"5.6.2.40046327","url":"https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.6.2.40046327-c7b525f3.deb","filename":"WorkBuddy-linux-x64-deb-5.6.2.40046327-c7b525f3.deb","build":"c7b525f3","upstream_sha256":"12149ad8c0cd748fd5062d8f62c7827d688d8095427ada99b1ae9e7019897523","release_timestamp":1790769527,"released_at":"2026-09-30T11:58:47Z","supports_fast_update":false,"arch":"x86_64 (amd64)","pkg":"deb","distro":"Ubuntu / Debian / UOS / deepin / openKylin","size_bytes":429829872,"etag":"\"5e95cb57e449d7e9c4d60f88ed96ba1e-410\"","last_modified":"Wed, 30 Sep 2026 04:48:28 GMT","probe_ok":true,"verified_sha256":null,"verified_at":null,"verified_size_bytes":null,"first_seen_at":"2026-11-11T13:28:03Z","last_checked_at":"2026-11-11T13:28:03Z"},"workbuddy-linux-x64-rpm":{"platform":"workbuddy-linux-x64-rpm","version":"5.6.2.40046327","product_version":"5.6.2.40046327","url":"https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm","filename":"WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm","build":"c7b525f3","upstream_sha256":"2e49fac166708e9716ab36dc3a7ffcf0fcea4a94591419b3654c59b67f4d392d","release_timestamp":1790769527,"released_at":"2026-09-30T11:58:47Z","supports_fast_update":false,"arch":"x86_64 (amd64)","pkg":"rpm","distro":"Fedora / RHEL / openSUSE","size_bytes":378230056,"etag":"\"d7d23cd0606c208968da25b7b783ff73-361\"","last_modified":"Wed, 30 Sep 2026 04:48:38 GMT","probe_ok":true,"verified_sha256":null,"verified_at":null,"verified_size_bytes":null,"first_seen_at":"2026-11-11T13:28:03Z","last_checked_at":"2026-11-11T13:28:03Z"},"workbuddy-linux-arm64-deb":{"platform":"workbuddy-linux-arm64-deb","version":"5.6.2.40046327","product_version":"5.6.2.40046327","url":"https://download.codebuddy.cn/workbuddy/saas/linux-arm64-deb/WorkBuddy-linux-arm64-deb-5.6.2.40046327-c7b525f3.deb","filename":"WorkBuddy-linux-arm64-deb-5.6.2.40046327-c7b525f3.deb","build":"c7b525f3","upstream_sha256":"561822578435d382a06d0a0b079a4b157f68b588c9fe72d589e2a88b2fd155fa","release_timestamp":1790769527,"released_at":"2026-09-30T11:58:47Z","supports_fast_update":false,"arch":"ARM64 (aarch64)","pkg":"deb","distro":"Ubuntu / Debian / UOS / deepin / openKylin","size_bytes":400068468,"etag":"\"965b97a531be8aa244a4fd02a9dff2ec-382\"","last_modified":"Wed, 30 Sep 2026 05:07:41 GMT","probe_ok":true,"verified_sha256":null,"verified_at":null,"verified_size_bytes":null,"first_seen_at":"2026-11-11T13:28:03Z","last_checked_at":"2026-11-11T13:28:03Z"},"workbuddy-linux-arm64-rpm":{"platform":"workbuddy-linux-arm64-rpm","version":"5.6.2.40046327","product_version":"5.6.2.40046327","url":"https://download.codebuddy.cn/workbuddy/saas/linux-arm64-rpm/WorkBuddy-linux-arm64-rpm-5.6.2.40046327-c7b525f3.rpm","filename":"WorkBuddy-linux-arm64-rpm-5.6.2.40046327-c7b525f3.rpm","build":"c7b525f3","upstream_sha256":"26df914b76abfb9167718bbbbe292e0676ec6eff5e12da7e01c3a049daaae695","release_timestamp":1790769527,"released_at":"2026-09-30T11:58:47Z","supports_fast_update":false,"arch":"ARM64 (aarch64)","pkg":"rpm","distro":"Fedora / RHEL / openSUSE","size_bytes":355596876,"etag":"\"ac401683df422f0c1971ea4bdb575866-340\"","last_modified":"Wed, 30 Sep 2026 05:07:51 GMT","probe_ok":true,"verified_sha256":null,"verified_at":null,"verified_size_bytes":null,"first_seen_at":"2026-11-11T13:28:03Z","last_checked_at":"2026-11-11T13:28:03Z"}}} /* AUTOGEN:DATA:END */;
+
+  function size(bytes) {
+    if (!bytes || bytes <= 0) return '未知';
+    return (bytes / 1048576).toFixed(1) + ' MiB';
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function card(platform, rec) {
+    var verified = rec.verified_sha256;
+    var shaLine = verified
+      ? '<div class="sha ok">实测 SHA256：' + esc(verified) + '</div>'
+      : '<div class="sha"><em>未实测</em> · 接口字段：' + esc(rec.upstream_sha256 || '-') + '（不作校验）</div>';
+    return '<div class="card">' +
+      '<div class="top"><span class="tag">' + esc(LABELS[platform]) + '</span>' +
+      '<span class="fmt">' + esc(rec.pkg) + '</span></div>' +
+      '<div class="arch">' + esc(rec.arch || LABELS[platform]) + '</div>' +
+      '<div class="distro">适用：' + esc(rec.distro || '-') + '</div>' +
+      '<div class="row"><span>版本</span><b>' + esc(rec.version) + '</b></div>' +
+      '<div class="row"><span>大小</span><b>' + size(rec.size_bytes) + '</b></div>' +
+      shaLine +
+      '<a class="btn' + (rec.url ? '' : ' disabled') + '" href="' + esc(rec.url || '#') + '">下载 ' + esc(rec.pkg) + '</a>' +
+      '</div>';
+  }
+
+  function render(data) {
+    var channels = (data && data.channels) || {};
+    document.getElementById('version').textContent = data && data.latest_version ? 'v' + data.latest_version : '暂无数据';
+    document.getElementById('updated').textContent = data && data.updated_at ? '更新于 ' + data.updated_at : '未检查';
+    var html = '';
+    ORDER.forEach(function (p) { if (channels[p]) html += card(p, channels[p]); });
+    document.getElementById('cards').innerHTML = html || '<p class="note">尚无版本数据，等待 GitHub Actions 首次运行。</p>';
+  }
+
+  function load() {
+    document.getElementById('status').textContent = '';
+    if (FALLBACK) render(FALLBACK);
+    fetch('versions.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(render)
+      .catch(function (e) {
+        document.getElementById('status').textContent = FALLBACK
+          ? '无法读取 versions.json（' + e.message + '），当前显示 Actions 内嵌快照。'
+          : '无法读取 versions.json（' + e.message + '）。请确认 GitHub Pages 已启用 /docs 目录。';
+        if (!FALLBACK) render(null);
+      });
+  }
+
+  document.getElementById('refresh').addEventListener('click', load);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-copy'));
+      var text = target.textContent;
+      var done = function () { btn.textContent = '已复制'; setTimeout(function () { btn.textContent = '复制'; }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {});
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+  load();
+})();
+</script>
+</body>
+</html>

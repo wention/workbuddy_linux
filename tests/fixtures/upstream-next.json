@@ -1,0 +1,42 @@
+{
+  "workbuddy-linux-x64-deb": {
+    "version": "5.6.3.40099999",
+    "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.6.3.40099999-a1b2c3d4.deb",
+    "productVersion": "5.6.3.40099999",
+    "sha256hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "timestamp": 1794390000,
+    "hash": "",
+    "name": "",
+    "supportsFastUpdate": false
+  },
+  "workbuddy-linux-x64-rpm": {
+    "version": "5.6.3.40099999",
+    "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.3.40099999-a1b2c3d4.rpm",
+    "productVersion": "5.6.3.40099999",
+    "sha256hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "timestamp": 1794390000,
+    "hash": "",
+    "name": "",
+    "supportsFastUpdate": false
+  },
+  "workbuddy-linux-arm64-deb": {
+    "version": "5.6.3.40099999",
+    "url": "https://download.codebuddy.cn/workbuddy/saas/linux-arm64-deb/WorkBuddy-linux-arm64-deb-5.6.3.40099999-a1b2c3d4.deb",
+    "productVersion": "5.6.3.40099999",
+    "sha256hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "timestamp": 1794390000,
+    "hash": "",
+    "name": "",
+    "supportsFastUpdate": false
+  },
+  "workbuddy-linux-arm64-rpm": {
+    "version": "5.6.3.40099999",
+    "url": "https://download.codebuddy.cn/workbuddy/saas/linux-arm64-rpm/WorkBuddy-linux-arm64-rpm-5.6.3.40099999-a1b2c3d4.rpm",
+    "productVersion": "5.6.3.40099999",
+    "sha256hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "timestamp": 1794390000,
+    "hash": "",
+    "name": "",
+    "supportsFastUpdate": false
+  }
+}

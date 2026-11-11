@@ -1,0 +1,141 @@
+name: 每日检查并发布 WorkBuddy Linux 新版本
+
+# 每天 UTC 01:23（北京时间 09:23）检查四个官方更新通道。
+# 只有检测到新版本 / 新构建时才写文件、建 Release，避免无意义的提交。
+on:
+  schedule:
+    - cron: '23 1 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: '强制把所有通道视为有变更（重新生成文档与 Release 说明）'
+        type: boolean
+        default: false
+      verify:
+        description: '下载安装包计算真实 SHA256（上游字段不可信）'
+        type: choice
+        options: [default, 'true', 'false']
+        default: default
+      mirror:
+        description: '把安装包本身上传为 Release 附件（约 1.6 GiB，默认关闭）'
+        type: choice
+        options: [default, 'true', 'false']
+        default: default
+      dry_run:
+        description: '只演练，不写文件、不建 Release'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: workbuddy-linux-release
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 查询上游更新接口
+        id: check
+        env:
+          IN_FORCE: ${{ inputs.force }}
+          IN_VERIFY: ${{ inputs.verify }}
+          IN_MIRROR: ${{ inputs.mirror }}
+          IN_DRY_RUN: ${{ inputs.dry_run }}
+          VAR_VERIFY: ${{ vars.WB_VERIFY_CHECKSUMS }}
+          VAR_MIRROR: ${{ vars.WB_MIRROR_ASSETS }}
+          WB_ALLOWED_DOWNLOAD_HOSTS: ${{ vars.WB_ALLOWED_DOWNLOAD_HOSTS }}
+        run: |
+          set -euo pipefail
+          verify="${IN_VERIFY:-default}"
+          if [ "$verify" = "default" ]; then verify="${VAR_VERIFY:-true}"; fi
+          mirror="${IN_MIRROR:-default}"
+          if [ "$mirror" = "default" ]; then mirror="${VAR_MIRROR:-false}"; fi
+          if [ "$mirror" = "true" ] && [ "$verify" != "true" ]; then
+            echo "::notice::镜像附件需要先下载校验，已自动开启 --verify"
+            verify=true
+          fi
+          args=(check --root . --github-output "$GITHUB_OUTPUT")
+          if [ "$verify" = "true" ]; then
+            args+=(--verify)
+          else
+            args+=(--no-verify)
+          fi
+          if [ "$mirror" = "true" ]; then args+=(--mirror); fi
+          if [ "$IN_FORCE" = "true" ]; then args+=(--force); fi
+          if [ "$IN_DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          echo "运行参数: ${args[*]}"
+          PYTHONPATH=src python3 -m wb_release "${args[@]}"
+
+      - name: 发布 GitHub Release
+        if: steps.check.outputs.has_update == 'true' && steps.check.outputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          created=0
+          for notes in dist/releases/*.md; do
+            tag="$(basename "$notes" .md)"
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "Release $tag 已存在，跳过（幂等）"
+              continue
+            fi
+            echo "创建 Release $tag"
+            gh release create "$tag" \
+              --title "WorkBuddy Linux $tag" \
+              --notes-file "$notes" \
+              --target "${{ github.sha }}" \
+              --latest
+            gh release upload "$tag" "dist/releases/$tag.json" --clobber
+            if [ -d "dist/assets/$tag" ]; then
+              for asset in "dist/assets/$tag"/*; do
+                [ -e "$asset" ] || continue
+                gh release upload "$tag" "$asset" --clobber
+              done
+            fi
+            created=$((created + 1))
+          done
+          echo "共新建 $created 个 Release"
+          echo "created=$created" >> "$GITHUB_OUTPUT"
+
+      # 先发布、后提交状态：若发布失败，下一次运行会重试，不会把版本误记为已发布。
+      - name: 提交版本数据
+        if: steps.check.outputs.has_update == 'true' && steps.check.outputs.dry_run != 'true'
+        env:
+          BRANCH: ${{ github.ref_name }}
+          LATEST: ${{ steps.check.outputs.latest_version }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/versions.json data/history.jsonl docs/versions.json docs/latest.json CHANGELOG.md README.md
+          if git diff --cached --quiet; then
+            echo "没有需要提交的文件变更"
+            exit 0
+          fi
+          git commit -m "chore(release): track WorkBuddy Linux v${LATEST} [skip ci]"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${BRANCH}"; then break; fi
+            if [ "$attempt" = "3" ]; then exit 1; fi
+            echo "推送失败，rebase 后重试 ($attempt/3)"
+            git pull --rebase origin "$BRANCH"
+          done
+
+      - name: 写入任务摘要
+        if: always()
+        run: |
+          if [ -f dist/summary.md ]; then
+            cat dist/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi

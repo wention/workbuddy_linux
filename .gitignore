@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+.DS_Store
+
+# Release notes, manifests and (optional) mirrored packages are build artifacts.
+dist/

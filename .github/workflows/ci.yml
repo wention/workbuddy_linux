@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/ci.yml'
+      - 'pyproject.toml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/ci.yml'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 语法检查
+        run: python -m compileall -q src
+
+      - name: 单元测试
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+
+      - name: 离线端到端演练（seed → 发现新版本 → 生成 Release 说明）
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          printf '# Fixture project\n' > "$tmp/README.md"
+          PYTHONPATH=src python -m wb_release seed \
+            --root "$tmp" --fixtures tests/fixtures/upstream-current.json --no-probe
+          PYTHONPATH=src python -m wb_release check \
+            --root "$tmp" --fixtures tests/fixtures/upstream-next.json --no-probe --no-verify
+          test -f "$tmp/dist/releases/v5.6.3.40099999.md"
+          grep -q 'sudo apt install' "$tmp/dist/releases/v5.6.3.40099999.md"
+          echo '离线演练通过'
