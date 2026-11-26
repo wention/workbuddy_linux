@@ -24,10 +24,10 @@ WorkBuddy 官网的 Linux 一栏只写了「请到统信 UOS / 银河麒麟应�
 <!-- AUTOGEN:DOWNLOADS:START -->
 | 架构 | 包格式 | 适用发行版 | 版本 | 大小 | 下载 |
 | --- | --- | --- | --- | --- | --- |
-| x86_64 (amd64) | `deb` | Ubuntu / Debian / UOS / deepin / openKylin | `5.6.2.40046327` | 409.9 MiB | [下载 deb](https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.6.2.40046327-c7b525f3.deb) |
-| x86_64 (amd64) | `rpm` | Fedora / RHEL / openSUSE | `5.6.2.40046327` | 360.7 MiB | [下载 rpm](https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm) |
-| ARM64 (aarch64) | `deb` | Ubuntu / Debian / UOS / deepin / openKylin | `5.6.2.40046327` | 381.5 MiB | [下载 deb](https://download.codebuddy.cn/workbuddy/saas/linux-arm64-deb/WorkBuddy-linux-arm64-deb-5.6.2.40046327-c7b525f3.deb) |
-| ARM64 (aarch64) | `rpm` | Fedora / RHEL / openSUSE | `5.6.2.40046327` | 339.1 MiB | [下载 rpm](https://download.codebuddy.cn/workbuddy/saas/linux-arm64-rpm/WorkBuddy-linux-arm64-rpm-5.6.2.40046327-c7b525f3.rpm) |
+| x86_64 (amd64) | `deb` | Ubuntu / Debian / UOS / deepin / openKylin | `5.11.6.44396970` | 429.6 MiB | [下载 deb](https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.11.6.44396970-0f347fd9.deb) |
+| x86_64 (amd64) | `rpm` | Fedora / RHEL / openSUSE | `5.11.6.44396970` | 379.4 MiB | [下载 rpm](https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.11.6.44396970-0f347fd9.rpm) |
+| ARM64 (aarch64) | `deb` | Ubuntu / Debian / UOS / deepin / openKylin | `5.11.6.44396970` | 398.3 MiB | [下载 deb](https://download.codebuddy.cn/workbuddy/saas/linux-arm64-deb/WorkBuddy-linux-arm64-deb-5.11.6.44396970-0f347fd9.deb) |
+| ARM64 (aarch64) | `rpm` | Fedora / RHEL / openSUSE | `5.11.6.44396970` | 353.7 MiB | [下载 rpm](https://download.codebuddy.cn/workbuddy/saas/linux-arm64-rpm/WorkBuddy-linux-arm64-rpm-5.11.6.44396970-0f347fd9.rpm) |
 <!-- AUTOGEN:DOWNLOADS:END -->
 
 > 不确定架构？终端运行 `uname -m`：`x86_64` 选 x64，`aarch64` 选 ARM64。
